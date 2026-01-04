@@ -7,6 +7,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "80:80"
+    environment:
+      - VITE_API="http://web:9000"
 
   backend:
     build:
