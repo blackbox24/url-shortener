@@ -1,0 +1,4 @@
+.venv
+.gitignore
+uv.lock
+__pycache__
