@@ -39,7 +39,7 @@ def create_app() -> FastAPI:
     from fastapi.middleware.cors import CORSMiddleware
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=CSRF_TRUSTED_ORIGINS,
+        allow_origins=CSRF_TRUSTED_ORIGINS, # type: ignore
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
