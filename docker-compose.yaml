@@ -1,14 +1,17 @@
 version: "3.8"
 
 services:
-  web:
-    build: 
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "80:80"
-    environment:
-      - VITE_API="http://web:9000"
+  # web:
+  #   build: 
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "80:80"
+  #   environment:
+  #     - VITE_API="http://web:9000"
+  #   depends_on:
+  #     backend:
+  #       condition: service_healthy
 
   backend:
     build:
@@ -16,3 +19,14 @@ services:
       dockerfile: Dockerfile
     ports:
       - "9000:9000"
+    healthcheck:
+      test: ["CMD" ,"curl","-f","http://localhost:9000"]
+      retries: 3
+      interval: 10s
+      timeout: 30s
+      start_interval: 10s
+    develop:
+      watch:
+        - path: .backend/main.py
+          action: sync+restart
+          target: /app/main.py

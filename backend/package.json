@@ -1,0 +1,31 @@
+{
+  "name": "url-shortener",
+  "version": "1.0.0",
+  "description": "Url shortener",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "vitest",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blackbox24/url-shortener.git"
+  },
+  "author": "Hope Decardi-Nelson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/blackbox24/url-shortener/issues"
+  },
+  "homepage": "https://github.com/blackbox24/url-shortener#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "pg": "^8.17.1",
+    "zod": "^4.3.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
