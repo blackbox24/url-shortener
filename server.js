@@ -33,3 +33,8 @@ process.on("SIGTERM",()=>{
   pool.end();
   process.exit(0)
 })
+
+process.on("SIGINT",()=>{
+  pool.end();
+  process.exit(0)
+})

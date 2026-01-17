@@ -15,18 +15,59 @@ services:
 
   backend:
     build:
-      context: ./backend
+      context: .
       dockerfile: Dockerfile
     ports:
-      - "9000:9000"
+      - "3000:3000"
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=url_db
     healthcheck:
-      test: ["CMD" ,"curl","-f","http://localhost:9000"]
+      test: ["CMD" ,"curl","-f","http://localhost:3000/api/v1/health"]
       retries: 3
       interval: 10s
       timeout: 30s
       start_interval: 10s
-    develop:
-      watch:
-        - path: .backend/main.py
-          action: sync+restart
-          target: /app/main.py
+    networks:
+      - db
+    depends_on:
+      - db
+    # develop:
+    #   watch:
+    #     - path: .backend/main.py
+    #       action: sync+restart
+    #       target: /app/server.js
+
+# Source - https://stackoverflow.com/a
+# Posted by e741af0d41bc74bf854041f1fbdbf, modified by community. See post 'Timeline' for change history
+# Retrieved 2026-01-17, License - CC BY-SA 4.0
+
+  db:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 2001
+      PGDATA: /data/postgres
+      POSTGRES_DB: url_db
+    volumes:
+      - db:/data/postgres
+      - ./src/database/url_db.sql:/docker-entrypoint-initdb.d/create_database.sql
+    ports:
+      - "5332:5432"
+    networks:
+      - db
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d url_db" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+networks:
+  db:
+    driver: bridge
+
+volumes:
+  db:
