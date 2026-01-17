@@ -27,3 +27,27 @@ export const addUrl = async(req,resp) => {
         return resp.status(400).json({"message": "Error occurred in server",error})
     }
 }
+
+
+export const getShortenUrl = async(req, resp) => {
+    try{
+        const shortcode = req.params.shortcode;
+        const query = await pool.query('SELECT * FROM urls WHERE shortcode=$1',[shortcode]);
+
+        if( query.rowCount === 0){
+            return resp.status(404).json({message:"Url not found"})
+        }
+        
+        const result = query.rows[0]
+
+        return resp.status(200).json({
+            id: result.id,
+            url: result.name,
+            shortCode: result.shortcode,
+            createdAt: result.createdat,
+            updatedAt: result.updatedat
+        })
+    }catch(error){
+        return resp.status(400).json({message:"Error occurred",err:error})
+    }
+}
