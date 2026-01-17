@@ -2,6 +2,7 @@ import express from "express";
 import * as dotenv from "dotenv";
 import pool from "./src/config/db.js";
 import cors from "cors"
+import url_router from "./src/routes/url.routers.js"
 
 
 dotenv.config()
@@ -18,6 +19,7 @@ app.use(
   }),
 );
 
+app.use(`/api/${API_VERSION}/shorten`,url_router)
 
 app.get(`/api/${API_VERSION}/health`,(req,resp)=>{
   return resp.status(200).json({"message":"Server is health"})
