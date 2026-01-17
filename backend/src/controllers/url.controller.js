@@ -51,3 +51,27 @@ export const getShortenUrl = async(req, resp) => {
         return resp.status(400).json({message:"Error occurred",err:error})
     }
 }
+
+export const updateShortenUrl = async(req, resp) => {
+    try{
+        const shortcode = req.params.shortcode;
+        const {body} = await urlSchema.parseAsync(req)
+        const query = await pool.query('UPDATE urls SET name=$1 WHERE shortcode=$2',[body.url, shortcode]);
+
+        if( query.rowCount === 0){
+            return resp.status(404).json({message:"Url not found"})
+        }
+        const fetchRow = await pool.query('SELECT * FROM urls WHERE shortcode=$1',[shortcode])
+
+        const result = fetchRow.rows[0]
+        return resp.status(200).json({
+            id: result.id,
+            url: result.name,
+            shortCode: result.shortcode,
+            createdAt: result.createdat,
+            updatedAt: result.updatedat
+        })
+    }catch(error){
+        return resp.status(400).json({message:"Error occurred",err:error})
+    }
+}
