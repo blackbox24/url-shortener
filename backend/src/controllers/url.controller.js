@@ -75,3 +75,17 @@ export const updateShortenUrl = async(req, resp) => {
         return resp.status(400).json({message:"Error occurred",err:error})
     }
 }
+
+export const deleteShortenUrl = async(req, resp) => {
+    try{
+        const shortcode = req.params.shortcode;
+        const query = await pool.query('DELETE FROM urls WHERE shortcode=$1',[shortcode]);
+
+        if( query.rowCount === 0){
+            return resp.status(404).json({message:"Url not found"})
+        }
+        return resp.status(204).json()
+    }catch(error){
+        return resp.status(400).json({message:"Error occurred",err:error})
+    }
+}

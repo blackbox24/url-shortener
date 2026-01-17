@@ -1,5 +1,5 @@
 import {Router} from "express"
-import { addUrl, getShortenUrl, updateShortenUrl } from "../controllers/url.controller.js"
+import { addUrl, deleteShortenUrl, getShortenUrl, updateShortenUrl } from "../controllers/url.controller.js"
 
 const router = Router();
 
@@ -10,5 +10,7 @@ router.get("/:shortcode", getShortenUrl);
 
 
 router.post("/:shortcode", updateShortenUrl);
+
+router.delete("/:shortcode", deleteShortenUrl);
 
 export default router;
